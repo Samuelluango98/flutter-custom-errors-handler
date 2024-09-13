@@ -1,0 +1,13 @@
+name: custom_errors_handler
+description: "This package is a basic custom error handler for flutter applications"
+version: 0.0.1
+homepage: "https://github.com/samuelluango98"
+
+environment:
+  sdk: ^3.5.3
+  flutter: ">=1.17.0"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
