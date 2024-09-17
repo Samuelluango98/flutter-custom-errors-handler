@@ -1,0 +1,70 @@
+name: CI
+on:
+  pull_request:
+    branches: ["master", "release", "hotfix", "dev" ]
+  push:
+    branches: ["master", "release", "hotfix", "dev" ]
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          java-version: "12.x"
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: example/
+      - name: Analyze code
+        run: flutter analyze
+        working-directory: example/
+      - name: Run tests
+        run: flutter test
+        working-directory: example/
+  build_ios:
+    name: Build Flutter (ios)
+    needs: [run_tests]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          java-version: "12.x"
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: example/
+      - name: Clean project
+        run: flutter clean
+        working-directory: example/
+      - name: Build App
+        run: flutter build ios --release --no-codesign
+        working-directory: example/
+  build_android:
+    name: Build Flutter (android)
+    needs: [run_tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          java-version: "12.x"
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: example/
+      - name: Clean project
+        run: flutter clean
+        working-directory: example/
+      - name: Build App
+        run: flutter build appbundle
+        working-directory: example/
+
+
+    
+
+      
